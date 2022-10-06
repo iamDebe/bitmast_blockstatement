@@ -1,25 +1,24 @@
 import React from "react";
 import Register from "./Pages/Register";
-import {Routes, Route} from "react-router-dom"
+import { Routes, Route } from "react-router-dom";
 import Withdraw from "./Pages/Withdraw";
 import Faq from "./Pages/Faq";
-import Login from './Pages/Login';
+import Login from "./Pages/Login";
 import Logout from "./Components/Logout";
+import WithdrawAuth from "./utils/WithdrawAuth";
 
 function App() {
   return (
-    <>
-      <Routes>
+    <Routes>
+      <Route path="/register" element={<Register />} />
+      <Route path="/logout" element={<Logout />} />
+      <Route path="/" element={<Faq />} />
+      <Route path="/login" element={<Login />} />
 
-        <Route path="/register" element={<Register />} />
-        <Route path="/withdraw" element={<Withdraw />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/logout" element={<Logout />} />
-        <Route path="/faq" element={<Faq />} />
-        
-      </Routes>
-    </>
-    
+      <Route element={<WithdrawAuth />}>
+        <Route path="withdraw" element={<Withdraw />} />
+      </Route>
+    </Routes>
   );
 }
 

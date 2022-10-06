@@ -24,15 +24,14 @@ const Register = () => {
     bankAcct: "",
     bankName: "",
     bvn: "",
-  
   });
-  const [isChecked, setIsChecked] = useState (false)
-  const [enableBtn, setEnabledBtn] = useState(true)
+  const [isChecked, setIsChecked] = useState(false);
+  // const [enableBtn, setEnabledBtn] = useState(true);
 
   const handleCheckBox = (event) => {
-    setIsChecked(!isChecked)
-    console.log(isChecked)
-  }
+    setIsChecked(!isChecked);
+    console.log(isChecked);
+  };
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -42,6 +41,12 @@ const Register = () => {
         [name]: type === "checkbox" ? checked : value,
       };
     });
+    setAlertData({
+      title: "",
+      message: "",
+      color: ""
+
+    })
   };
 
   const submitForm = async (e) => {
@@ -186,19 +191,19 @@ const Register = () => {
                   type="text"
                   name="bankName"
                   id="bankName"
-                  className="border-2 border-[hsla(0, 0%, 69%, 1)] w-full md:p-4 bg-white text-[#B3B3B3]"
+                  className="border-2 border-[hsla(0, 0%, 69%, 1)] w-full md:p-4 bg-[#e5f0fe] text-grey-500"
                   required
                   defaultValue={formData.bankName}
                   onChange={handleChange}
                 >
-                  <optgroup className="bg-white">
+                 
                     <option value={0} selected disabled>
                       Select Bank
                     </option>
                     <option value={1}>Access/Diamond</option>
                     <option value={2}>Guaranty Trust Bank</option>
                     <option value={3}>United Bank of Africa</option>
-                  </optgroup>
+                 
                 </select>
               </div>
               <div className="my-4">
@@ -229,28 +234,28 @@ const Register = () => {
                   required
                   onChange={handleCheckBox}
                 />
-               
+
                 <label
-                 className= "my-2 flex h-8 w-16 bg-gray-600 text-white rounded-full peer-checked:bg-blue-500 cursor-pointer"
+                  className="my-2 flex h-8 w-16 bg-gray-600 text-white rounded-full peer-checked:bg-blue-500 cursor-pointer"
                   htmlFor="check"
                 >
-
-                  <span className= {classNames("h-8 w-[60%] bg-white text-white rounded-full transiton-all duration-500 cursor-pointer",{ 'ms-4':isChecked})}
+                  <span
+                    className={classNames(
+                      "h-8 w-[60%] bg-white text-white rounded-full transiton-all duration-500 cursor-pointer",
+                      { "ms-4": isChecked }
+                    )}
                   ></span>
-                  {/* <span className="h-10 w-10 bg-white text-red-400"></span> */}
-                  
-                  {/* I agree that my details are correct. Once an Account is mapped
-                  to this service, the assigned wallet address cannot be
-                  modified or set to another account. All funds received in your
-                  wallet will be payable only to the registered account. */}
                 </label>
-                <span className="my-2">I agree that my details are correct. Once an Account is mapped
+                <span className="my-2">
+                  I agree that my details are correct. Once an Account is mapped
                   to this service, the assigned wallet address cannot be
                   modified or set to another account. All funds received in your
-                  wallet will be payable only to the registered account.</span>
-                
+                  wallet will be payable only to the registered account.
+                </span>
               </div>
-              <BitmastBtn className="w-[70%]" disabled={true}>REGISTER</BitmastBtn>
+              <BitmastBtn className="w-[70%]" disabled={true}>
+                REGISTER
+              </BitmastBtn>
               <br />
 
               <hr />

@@ -6,6 +6,8 @@ import axios from "axios";
 import { path } from "../api/urlRoutes";
 import CustomAlert from "../Components/CustomAlert";
 import { useNavigate } from "react-router-dom";
+import { GoTriangleDown } from "react-icons/go";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const base_url = "https://bitmast-dummy-response.herokuapp.com";
@@ -77,6 +79,7 @@ const Login = () => {
       .then((resp) => {
         const feedback = resp.data;
         // console.log(feedback)
+        
         const user = feedback.filter(function (data) {
           return data.email == email;
         });
@@ -99,6 +102,7 @@ const Login = () => {
         }
 
         authenticateUser(user[0]);
+        console.log(cookies.user)
       })
       .catch((error) => {
         console.log(error);
@@ -191,10 +195,10 @@ const Login = () => {
                     className="border-2 border-[hsla(0, 0%, 69%, 1)] w-full md:p-4 placeholder:text-[#2C318D] placeholder:font-extrabold"
                     defaultValue={email}
                     onChange={(e) => setEmail(e.target.value)}
-                  />
+                  /><br />
                   <button
                     type="button"
-                    className="bg-[#2C318D] text-[1.3rem] text-white  py-3 px-4 my-3 ms-0 capitalize next"
+                    className="bg-[#2C318D] text-[1.3rem] text-white  py-3 px-4 my-3 ms-0 capitalize w-full next"
                     onClick={nextItem}
                   >
                     Next <i className="fa fa-chevron-right ms-2"></i>
@@ -202,49 +206,72 @@ const Login = () => {
                 </div>
 
                 <div className="" id="qrCode" ref={passwordInput}>
-                  <div>
-                    <h2 className="mx-auto text-center my-4 uppercase text-[#B1B1B1] md:text-lg text-sm font-bold">
-                      {" "}
-                      <strong>scan QR</strong> code to login
-                    </h2>
-                    <img
-                      src="/assets/images/image 2.svg"
-                      className="mx-auto shadow-md"
-                      alt=""
-                    />
-                  </div>
-                  <div className="mt-6 mb-4">
-                    <h2 className="mx-auto text-center text-[#B1B1B1] md:text-lg text-sm font-bold my-4">
+                  
+                  <div className="mt-6 mb-4 relative">
+                    {/* <h2 className="mx-auto text-center text-[#B1B1B1] md:text-lg text-sm font-bold my-4">
                       OR
-                    </h2>
+                    </h2> */}
                     <label
-                      htmlFor="bankAccount"
-                      className="text-[#B1B1B1] md:text-lg text-sm font-bold flex justify-between"
+                      htmlFor="password"
+                      className="text-[#B1B1B1] md:text-lg text-sm font-bold flex justify-between py-2"
                     >
                       <h2 className="uppercase">password</h2>
                     </label>
                     <input
                     type={passwordType}
-                      name="bankAccount"
-                      className="border-2 border-[hsla(0, 0%, 69%, 1)] w-80 md:p-4"
+                      name="password"
+                      className="border-2 border-[hsla(0, 0%, 69%, 1)] w-full md:p-4"
                       defaultValue={password}
                       onChange={(e) => setPassword(e.target.value)}
                       
                     />
-                    <span className="ms-2">
+                    <span className="ms-2 inline absolute z-30 top-1 right-4">
                       <i className={ `fa ${eyeIcon}`} onClick={togglePasswordVisibilty}></i>
                     </span>
-                    
+                  
+                  
                   </div>
                   <BitmastBtn handleLogin={handleLogin} className="w-[70%]">Login</BitmastBtn>
                   <BitmastBtn
                     type="button"
-                    className=" py-3 px-4 my-3 ms-3 capitalize"
+                    className=" py-3 px-4 my-3 ms-3 capitalize w-[26%]"
                     onClick={prevItem}
                   >
                     {" "}
                     <i className="fa fa-chevron-left me-2"></i>back{" "}
                   </BitmastBtn>
+                  <hr  className="w-full mt-5 mb-4"/>
+                  <div className="relative w-full overflow-hidden mt-0">
+                    <input type="checkbox" 
+                    name=""
+                    id=""
+                    className=" peer absolute top-0 inset-x-0 w-full h-12 opacity-0 z-10 cursor-pointer"
+                     />
+                    <div className="bg-[##EEEEE] h-12 w-[70%] flex  items-center mt-3   mx-auto ">
+                      <h2 className=" text-center mx-auto my-4 uppercase text-[#B1B1B1] md:text-lg text-sm font-bold">
+                                {" "}
+                                <strong>scan QR</strong> code to login
+                      </h2>
+                      <div className="transition-transform duration-500 rotate-0  peer-checked:rotate-180">
+                        <span className=" "><i className="fa fa-chevron-down text-[#B1B1B1]  "></i></span>
+                      </div>
+                    </div>
+                   
+                    <div className="overflow-hidden transition-all  duration-500 max-h-0 peer-checked:max-h-40">
+                        <div className="px-2 py-2">
+                          <div>
+                            
+                            <img
+                              src="/assets/images/passsword.svg"
+                              className="mx-auto shadow-md w-40 "
+                              alt=""
+                            />
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <hr  className="w-full mt-5 mb-4"/>
+
                 </div>
               </form>
             </div>

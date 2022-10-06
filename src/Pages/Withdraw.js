@@ -2,35 +2,54 @@ import React, { useState } from "react";
 import BitmastBtn from "../Components/BitmastBtn";
 import CustomAlert from "../Components/CustomAlert";
 import Navbar from "../Components/Navbar";
+import classNames from "classnames";
+import { path } from "../api/urlRoutes";
+import axios from "axios";
 
 const Withdraw = () => {
+  const [isChecked, setIsChecked] = useState(false);
   const [wallet, setWallet] = useState({
     symbol: "BTC",
-    exchangeRate: 0.77,
+    exchangeRate: 13719944,
   });
 
-  const [tokenData, setTokenData] = useState({
-    BTC: {
-      exchangeRate: 0.77,
-    },
-    BNB: {
-      exchangeRate: 0.56,
-    },
-    USDT: {
-      exchangeRate: 0.89,
-    },
-  });
 
-  const switchWallet = () => {
+
+  const onChangeHandler = () => {
     const selectedToken = document.querySelector("#selectWallet").value;
-    const tokenRate = tokenData[selectedToken].exchangeRate;
-    console.log(tokenRate);
-    setWallet({
-      symbol: selectedToken,
-      exchangeRate: tokenRate,
-    });
+
+    const tokenRate = axios
+      .get(
+        `https://min-api.cryptocompare.com/data/price?fsym=${selectedToken}&tsyms=NGN`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_APP_TOKEN}`,
+          },
+        }
+      )
+      .then((response) => {
+        setWallet({
+          symbol: selectedToken,
+          exchangeRate: response.data.NGN,
+        });
+      });
   };
 
+  const convertToFiat = (event) => {
+    const crptoValue = document.querySelector("#btcAcctInput").value;
+    const fiatInput = document.querySelector("#fiat");
+    fiatInput.value = crptoValue * wallet.exchangeRate;
+    
+    
+  };
+
+  const handleCheckBox = (event) => {
+    setIsChecked(!isChecked);
+    console.log(isChecked);
+  };
+
+  
   return (
     <>
       <div className="">
@@ -65,11 +84,12 @@ const Withdraw = () => {
                   <select
                     name="walletName"
                     id="selectWallet"
-                    className="border-2 border-[hsla(0, 0%, 69%, 1)] w-full md:p-4 "
-                    onChange={switchWallet}
+                    className="border-2 border-[hsla(0, 0%, 69%, 1)] w-full md:p-4 bg-white"
+                    onChange={onChangeHandler}
+                    defaultValue="Choose Your Wallet"
                   >
                     <optgroup className="border-2 border-[#2C318D]">
-                      <option defalutvalue="" className="" selected disabled>
+                      <option defalutvalue="" className="" disabled>
                         Choose Your Wallet
                       </option>
                       <option defalutvalue="BTC" className="">
@@ -86,12 +106,14 @@ const Withdraw = () => {
                 </div>
 
                 <img
-                  src="/assets/images/image 2.svg"
-                  className="mx-auto shadow-md"
+                  src="/assets/images/bitcoinaddress.svg"
+                  className="mx-auto shadow-md  w-50"
                   alt=""
                 />
                 <div className="flex justify-evenly ">
-                  <p className="text-center my-3 ms-5 text-[#2C318D]">gchdh67b99t675544009ghbkkj</p>
+                  <p className="text-center my-3  text-[#2C318D]">
+                    375YT8ADQuZo7dmmMTjXRo94eNXwQoumqy
+                  </p>
                   <img
                     src="/assets/images/history 1.svg"
                     className="cursor-pointer"
@@ -100,19 +122,22 @@ const Withdraw = () => {
                   />
                 </div>
                 <div className="my-4">
-                  <label
-                    htmlFor="phone"
-                    className="text-[#B1B1B1] md:text-lg text-sm font-bold uppercase py-2 "
+                <label
+                    htmlFor="btcAccount"
+                    className="text-[#B1B1B1] md:text-lg text-sm font-bold flex justify-between"
                   >
-                    naira equivalent
+                    <h2 className="uppercase">
+                      <span className="changing__value">AMOUNT TO WITHDRAW IN {wallet.symbol}</span>{" "}
+                     
+                    </h2>
+                    <img src="/assets/images/image 3.svg" alt="" />
                   </label>
-                  <br />
                   <input
-                    type="email"
-                    name="email"
-                    placeholder=""
-                    id=""
-                    className="border-2 border-[hsla(0, 0%, 69%, 1)] w-full md:p-4 placeholder:text-[#2C318D] placeholder:font-extrabold"
+                    type="number"
+                    name="btcAccount"
+                    id="btcAcctInput"
+                    className="border-2 border-[hsla(0, 0%, 69%, 1)] w-full md:p-4"
+                    onChange={convertToFiat}
                   />
                   <div className="md:flex justify-between items-center h-15 balance mt-6">
                     <h3 className="capitalize text-[#2C318D] md:text-lg text-[.8rem] font-bold">
@@ -134,47 +159,59 @@ const Withdraw = () => {
                 </div>
 
                 <div className="mt-6 mb-4">
-                  <label
-                    htmlFor="bankAccount"
-                    className="text-[#B1B1B1] md:text-lg text-sm font-bold flex justify-between"
+                <label
+                    htmlFor="phone"
+                    className="text-[#B1B1B1] md:text-lg text-sm font-bold uppercase py-2 "
                   >
-                    <h2 className="uppercase">
-                      <span className="changing__value">{wallet.symbol}</span>{" "}
-                      EQUIVALENT
-                    </h2>
-                    <img src="/assets/images/image 3.svg" alt="" />
+                    naira equivalent
                   </label>
+                  <br />
                   <input
-                    type="text"
-                    name="bankAccount"
-                    id=""
-                    className="border-2 border-[hsla(0, 0%, 69%, 1)] w-full md:p-4"
+                    type="email"
+                    name="email"
+                    placeholder=""
+                    id="fiat"
+                    className="border-2 border-[hsla(0, 0%, 69%, 1)] w-full md:p-4 placeholder:text-[#2C318D] placeholder:font-extrabold"
+                    disabled
                   />
+                 
                 </div>
                 <div className="md:flex justify-between items-start h-7">
                   <h3 className="capitalize text-[#2C318D] md:text-lg text-[.8rem] font-bold">
                     exchange rate
                   </h3>
                   <h3 className="text-[#2C318D] font-bold md:text-lg text-[.8rem]  ">
-                    {wallet.exchangeRate} NGN /
-                    <span className="changing__value">
-                      {" "}
-                      0.55 {wallet.symbol}
-                    </span>
+                  1 {wallet.symbol} /
+                    <span className="changing__value">  {wallet.exchangeRate} NGN </span>
                   </h3>
                 </div>
                 <p className="md:text-[1.1rem] text-[.85rem] text-[#4C5F68] font-semibold w-full md:mt-0 mt-1">
                   Conversion of cryptocurrency to Naira using CryptoCompare
                 </p>
                 <hr className="my-3" />
-                <div className=" my-3">
+                <div className=" my-3 flex">
                   <input
                     type="checkbox"
-                    name="checkbox"
-                    id=""
-                    className="px-2 "
+                    id="check"
+                    className="ms-1 hidden peer cursor-pointer"
+                    checked={isChecked.isChecked}
+                    name="isChecked"
+                    required
+                    onChange={handleCheckBox}
                   />
-                  <span className="text-[#2C318D]   md:text-[1.1rem] text-[.8rem] uppercase pl-3">
+
+                  <label
+                    className="my-2 flex h-8 w-16 bg-gray-600 text-white rounded-full peer-checked:bg-blue-500 cursor-pointer"
+                    htmlFor="check"
+                  >
+                    <span
+                      className={classNames(
+                        "h-8 w-[60%] bg-white text-white rounded-full transiton-all duration-500 cursor-pointer",
+                        { "ms-4": isChecked }
+                      )}
+                    ></span>
+                  </label>
+                  <span className="text-[#2C318D]   md:text-[1.1rem] text-[.8rem] uppercase pl-3 inline mt-2">
                     auto convert currencies
                   </span>
                 </div>

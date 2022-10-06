@@ -4,7 +4,7 @@ export  default function urlRoutes(){
         { 'path': '/users', 'name': 'get-users' },
         { 'path': '/login', 'name': 'login' },
         { 'path': '/register/user', 'name': 'register' },
-        { 'path': '/redoc', 'name': 'redoc_html' }
+        { 'path': '/data/price?fsym=BTC&tsyms=NGN', 'name': 'convert' }
     ]
     return apis;
 
